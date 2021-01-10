@@ -55,11 +55,13 @@ public:
 
     void activate_neurons() {
         for (int i = 0; i < hidden_layer.size(); i++) {
-            hidden_layer[i].calculate_value();
+            double new_value = hidden_layer[i].calculate_value();
+            hidden_layer[i].set_value(new_value);
         }
 
         for (int i = 0; i < output_layer.size(); i++) {
-            output_layer[i].calculate_value();
+            double new_value = output_layer[i].calculate_value();
+            output_layer[i].set_value(new_value);
         }
     }
 

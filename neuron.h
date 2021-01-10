@@ -37,11 +37,11 @@ public:
     }
 
     double sigmoid(double sum) const {
-        return 1.0 / (1.0 + exp(-sum));
+        return double(1) / (double(1) + exp(-sum));
     }
 
     void print() const {
-        cout << "NEURON VALUE: " << value <<endl;
+        cout << "NEURON VALUE: " << value << endl;
         cout << "LEFT CONNECTED NEURONS: " << endl;
         cout << "NUMBER OF LEFT CONNECTED NEURONS: " << leftconnected_neurons.size() << endl;
         for (int i = 0; i < leftconnected_neurons.size(); i++) {
