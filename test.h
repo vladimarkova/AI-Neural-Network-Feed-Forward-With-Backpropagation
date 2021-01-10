@@ -113,20 +113,26 @@ void test() {
             NUMBER_OF_NEURONS_IN_OUTPUT_LAYER
         );
 
-        neural_network.set_input_values(all_entries[3]);
+        // cout << "RESULT FROM CLASSIFICATION: " << neural_network.classify_entry(all_entries[3]) << endl;
 
-        neural_network.activate_neurons();
+        // neural_network.apply_backpropagation(expected_outputs[task_number][3]);
 
-        neural_network.print();
+        // cout << "RESULT FROM CLASSIFICATION AFTER APPLYING BACKPROPAGATION: " << neural_network.classify_entry(all_entries[3]) << endl;
+        
+        // neural_network.print_result_for_single_entry_classification(all_entries[3], expected_outputs[task_number][3]);
+        
+        // cout << endl << "NOW PRINTING: " << endl;
 
-        // neural_network.educate(all_entries, expected_outputs);
+        // neural_network.print();
+
+        neural_network.educate(all_entries, expected_outputs);
 
         show_task_type(task_number, number_of_neurons_in_hidden_layer);
-        // for (int i = 0; i < all_entries.size(); i++) {
-        //     neural_network.classify_entry(all_entries[i]);
+        for (int i = 0; i < all_entries.size(); i++) {
+            neural_network.classify_entry(all_entries[i]);
 
-        //     neural_network.print_result_for_single_entry_classification(all_entries[i], expected_outputs[task_number][i]);
-        // }
+            neural_network.print_result_for_single_entry_classification(all_entries[i], expected_outputs[task_number][i]);
+        }
 
         high_resolution_clock::time_point t2 = high_resolution_clock::now();
         duration<double, std::milli> time_span = t2 - t1; 

@@ -7,7 +7,7 @@ const int NUMBER_OF_NEURONS_IN_INPUT_LAYER = 2; // equals number of attributes f
 const int MAX_NUMBER_OF_NEURONS_IN_HIDDEN_LAYER = 12; // exact number is a paramater for the system
 const int DEFAULT_NUMBER_OF_NEURONS_IN_HIDDEN_LAYER = 4;
 const int NUMBER_OF_NEURONS_IN_OUTPUT_LAYER = 1; // equals number of classes for the task 
-const int MAX_NUMBER_OF_EPOCHS = 50; // to be made 50 000 
+const int MAX_NUMBER_OF_EPOCHS = 50000; // to be made 50 000 
 const double MIN_ERROR = 0.01; // to be made 0.001
 const double MAX_ERROR = 1;
 const double LEARNING_RATE = 0.1;
@@ -110,6 +110,7 @@ public:
         int current_epoch = 0;
         double error = MAX_ERROR;
         while (current_epoch < MAX_NUMBER_OF_EPOCHS && error > MIN_ERROR) {
+            // cout << "CURRENT EPOCH: " << current_epoch << endl;
             error = 0;
             for (int i = 0; i < all_entries.size(); i++) {
 
@@ -121,7 +122,10 @@ public:
 
                 apply_backpropagation(expected_outputs[task_number][i]);
             }
+            current_epoch++;
         }
+        cout << endl << "TOTAL NUMBER OF LEARNING EPOCHS: " << current_epoch << endl;
+        cout << endl << "MAX NUMBER OF LEARNING EPOCHS: " << MAX_NUMBER_OF_EPOCHS << endl;
     }
 
     double classify_entry(const Vector<double>& entry) {
@@ -142,6 +146,7 @@ public:
 
     void print_result_for_single_entry_classification(const Vector<double>& entry, double expected_output_for_entry) const {
         double result_from_classification = output_layer[0].get_value();
+        double error = abs(expected_output_for_entry - result_from_classification);
         cout << "INPUT: {" 
          << entry[0] 
          << ", " 
@@ -149,7 +154,10 @@ public:
          << "}          EXPECTED OUTPUT: " 
          << expected_output_for_entry
          << "           REAL OUTPUT: " 
-         << result_from_classification << endl << endl;
+         << result_from_classification 
+         << "         CALCULATED ERROR: "
+         << error
+         << endl << endl;
     }
 
     void print() const {
