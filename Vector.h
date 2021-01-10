@@ -26,6 +26,12 @@ public:
         return arr[index_of_element];
     }
 
+    void add_empty_elements(int number_of_new_elements) {
+        for(int i = 0; i < number_of_new_elements; i++) {
+            push_back(T());
+        }
+    }
+
     int size() const {
         return arr_size;
     }

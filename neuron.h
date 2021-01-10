@@ -16,10 +16,11 @@ private:
     double value = 0;
 
 public:
-    void add_left_neurons(const Vector<Neuron*>& new_left_neurons) {
-        for (int i = 0; i < leftconnected_neurons.size(); i++) {
-            leftconnected_neurons.push_back(new_left_neurons[i]);
-            weights.push_back(random_double(MIN_WEIGHT, MAX_WEIGHT));
+    void add_left_neurons(Vector<Neuron>& new_left_neurons) {
+        for (int i = 0; i < new_left_neurons.size(); i++) {
+            leftconnected_neurons.push_back(&(new_left_neurons[i]));
+            double random_double_value_for_weight = random_double(MIN_WEIGHT, MAX_WEIGHT);
+            weights.push_back(random_double_value_for_weight);
         }
     }
 
@@ -40,12 +41,12 @@ public:
     }
 
     void print() const {
-        cout << "VALUE: " << value <<endl;
+        cout << "NEURON VALUE: " << value <<endl;
         cout << "LEFT CONNECTED NEURONS: " << endl;
-        cout << "NUMBER: " << leftconnected_neurons.size() << endl;
+        cout << "NUMBER OF LEFT CONNECTED NEURONS: " << leftconnected_neurons.size() << endl;
         for (int i = 0; i < leftconnected_neurons.size(); i++) {
-            cout << "NEURON " << i << ": " << "VALUE: " << 
-            leftconnected_neurons[i]->value << "WEIGHT: " << weights[i] << endl << endl;
+            cout << "LEFT CONNECTED NEURON " << i << ": " << "VALUE: " << 
+            leftconnected_neurons[i]->value << " CONNECTION WEIGHT: " << weights[i] << endl << endl;
         }
     }
 
