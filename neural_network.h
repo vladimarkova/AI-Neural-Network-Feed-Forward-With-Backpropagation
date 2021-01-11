@@ -170,6 +170,44 @@ public:
          << endl << endl;
     }
 
+    void print_weights() {
+        cout << "WEIGHTS FOR CONNECTIONS BETWEEN: ";
+        if (hidden_layer.size() != 0) {
+            cout << "HIDDEN AND INPUT LAYERS " << endl << endl;
+            for (int i = 0; i < hidden_layer.size(); i++) {
+                cout << "FOR NEURON " << i << " IN HIDDEN LAYER: " << endl;
+                for (int j = 0; j < hidden_layer[i].number_of_left_connected_neurons(); j++) {
+                    double weight = hidden_layer[i].get_weight(j);
+                    cout << "WEIGHT " << j << ": " << weight << endl;
+                }
+                cout << endl;
+            }
+
+            cout << endl;
+
+            cout << "OUTPUT AND HIDDEN LAYERS" << endl << endl;
+            for (int i = 0; i < output_layer.size(); i++) {
+                cout << "FOR NEURON " << i << " IN OUTPUT LAYER: " << endl;
+                for (int j = 0; j < output_layer[i].number_of_left_connected_neurons(); j++) {
+                    double weight = output_layer[i].get_weight(j);
+                    cout << "WEIGHT " << j << ": " << weight << endl;
+                }
+                cout << endl;
+            }
+        } 
+        else {
+            cout << "OUTPUT AND INPUT LAYERS" << endl << endl;
+            for (int i = 0; i < output_layer.size(); i++) {
+                cout << "FOR NEURON " << i << "IN OUTPUT LAYER: " << endl;
+                for (int j = 0; j < output_layer[i].number_of_left_connected_neurons(); j++) {
+                    double weight = output_layer[i].get_weight(j);
+                    cout << "WEIGHT " << j << ": " << weight << endl;
+                }
+                cout << endl;
+            }
+        }
+    }
+
     void print() const {
         cout << endl;
         cout << "NEURAL NETWORK: INPUT LAYER: NUMBER OF NEURONS: " << input_layer.size() << endl << endl;

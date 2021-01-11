@@ -79,7 +79,7 @@ void show_task_type(int task_number, int number_of_neurons_in_hidden_layer) {
 
     cout << "OUTPUT LAYER: NUMBER OF NEURONS IN OUTPUT LAYER: " << NUMBER_OF_NEURONS_IN_OUTPUT_LAYER << endl;
 
-    cout << endl << "ADMISSIBLE ERROR <= " << MIN_ERROR << endl;
+    cout << endl << "ADMISSIBLE SQUARED SUM ERROR <= " << MIN_ERROR << endl;
 
     cout << endl;
 } 
@@ -141,6 +141,8 @@ void test() {
         }
 
         cout << "ESTIMATED TOTAL ERROR FOR ALL ENTRIES: " << error_of_all_entries_classification << endl << endl;
+
+        neural_network.print_weights();
 
         // neural_network.classify_entry(all_entries[1]);
 
