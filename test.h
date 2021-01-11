@@ -79,6 +79,8 @@ void show_task_type(int task_number, int number_of_neurons_in_hidden_layer) {
 
     cout << "OUTPUT LAYER: NUMBER OF NEURONS IN OUTPUT LAYER: " << NUMBER_OF_NEURONS_IN_OUTPUT_LAYER << endl;
 
+    cout << endl << "ADMISSIBLE ERROR <= " << MIN_ERROR << endl;
+
     cout << endl;
 } 
 
@@ -128,11 +130,25 @@ void test() {
         neural_network.educate(all_entries, expected_outputs);
 
         show_task_type(task_number, number_of_neurons_in_hidden_layer);
+
+        double error_of_all_entries_classification = 0;
         for (int i = 0; i < all_entries.size(); i++) {
             neural_network.classify_entry(all_entries[i]);
 
+            error_of_all_entries_classification += neural_network.estimate_error_of_entry_classification(all_entries[i], expected_outputs[task_number][i]);
+
             neural_network.print_result_for_single_entry_classification(all_entries[i], expected_outputs[task_number][i]);
         }
+
+        cout << "ESTIMATED TOTAL ERROR FOR ALL ENTRIES: " << error_of_all_entries_classification << endl << endl;
+
+        // neural_network.classify_entry(all_entries[1]);
+
+        // neural_network.apply_backpropagation(expected_outputs[task_number][1]);
+
+        // cout << "NOW PRINTING NEURAL NETWORK FOR INPUT {0, 1}..." << endl << endl;
+
+        // neural_network.print();
 
         high_resolution_clock::time_point t2 = high_resolution_clock::now();
         duration<double, std::milli> time_span = t2 - t1; 

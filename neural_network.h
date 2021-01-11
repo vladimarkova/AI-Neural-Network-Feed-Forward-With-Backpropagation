@@ -11,6 +11,7 @@ const int MAX_NUMBER_OF_EPOCHS = 50000; // to be made 50 000
 const double MIN_ERROR = 0.01; // to be made 0.001
 const double MAX_ERROR = 1;
 const double LEARNING_RATE = 0.1;
+const double MULTIPLY_CONST = 0.5;
 
 class Neural_Network{
 private:
@@ -83,8 +84,10 @@ public:
             for (int i = 0; i < hidden_layer.size(); i++) {
                 double hidden_neuron_value = hidden_layer[i].get_value();
                 for (int j = 0; j < hidden_layer[i].number_of_left_connected_neurons(); j++) {
-                    double left_neuron_value = output_layer[i].get_left_connected_neuron(j)->get_value();
+                    double left_neuron_value = hidden_layer[i].get_left_connected_neuron(j)->get_value();
+                    
                     double sum_outputs = 0;
+
                     for (int k = 0; k < output_layer.size(); k++) {
                         double weight = output_layer[k].get_weight(i);
                         double output_neuron_value = output_layer[k].get_value();
@@ -92,15 +95,15 @@ public:
                                      * output_neuron_value
                                      * (1 - output_neuron_value)
                                      * weight;  
-                        double partial_derivative = -hidden_neuron_value
+                    }
+                    double partial_derivative = hidden_neuron_value
                                           * (1 - hidden_neuron_value) 
                                           * left_neuron_value
                                           * sum_outputs; 
-                        double delta_weight = -LEARNING_RATE * partial_derivative;
-                        double current_weight = hidden_layer[i].get_weight(j);
-                        double new_weight = current_weight + delta_weight;
-                        hidden_layer[i].set_weight(j, new_weight);
-                    }
+                    double delta_weight = -LEARNING_RATE * partial_derivative;
+                    double current_weight = hidden_layer[i].get_weight(j);
+                    double new_weight = current_weight + delta_weight;
+                    hidden_layer[i].set_weight(j, new_weight);
                 }
             }
         }
@@ -116,16 +119,17 @@ public:
 
                 double current_output = classify_entry(all_entries[i]);
 
-                double err = (expected_outputs[task_number][i] - current_output) * (expected_outputs[task_number][i] - current_output);
-            
+                double err = MULTIPLY_CONST * (expected_outputs[task_number][i] - current_output) * (expected_outputs[task_number][i] - current_output);
+
                 error += err;
 
                 apply_backpropagation(expected_outputs[task_number][i]);
             }
             current_epoch++;
         }
-        cout << endl << "TOTAL NUMBER OF LEARNING EPOCHS: " << current_epoch << endl;
-        cout << endl << "MAX NUMBER OF LEARNING EPOCHS: " << MAX_NUMBER_OF_EPOCHS << endl;
+
+        cout << endl << "TOTAL NUMBER OF LEARNING EPOCHS MADE: " << current_epoch << endl;
+        cout << "MAX NUMBER OF LEARNING EPOCHS: " << MAX_NUMBER_OF_EPOCHS << endl << endl;
     }
 
     double classify_entry(const Vector<double>& entry) {
@@ -142,6 +146,12 @@ public:
 
     int get_task_number() const {
         return task_number; 
+    }
+
+    double estimate_error_of_entry_classification(const Vector<double>& entry, double expected_output_for_entry) {
+        double result_from_classification = output_layer[0].get_value();
+        double error = abs(expected_output_for_entry - result_from_classification);
+        return error;
     }
 
     void print_result_for_single_entry_classification(const Vector<double>& entry, double expected_output_for_entry) const {

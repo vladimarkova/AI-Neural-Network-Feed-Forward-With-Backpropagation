@@ -8,6 +8,7 @@ using namespace std;
 
 const double MIN_WEIGHT = -0.05;
 const double MAX_WEIGHT= 0.05;
+const double NORMALIZE = 0.001;
 
 class Neuron {
 private:
@@ -28,6 +29,7 @@ public:
         double sum = 0;
         for (int i = 0; i < leftconnected_neurons.size(); i++) {
             sum += (leftconnected_neurons[i]->value * weights[i]);
+            // sum += ((leftconnected_neurons[i]->value + NORMALIZE) * weights[i]);
         }
         return activation(sum);
     }
