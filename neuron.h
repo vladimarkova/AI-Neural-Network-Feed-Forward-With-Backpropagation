@@ -25,6 +25,12 @@ public:
         }
     }
 
+    void add_bias_as_left_neuron(Neuron& bias_neuron) {
+        leftconnected_neurons.push_back(&bias_neuron);
+        double random_double_value_for_bias_weight = random_double(MIN_WEIGHT, MAX_WEIGHT);
+        weights.push_back(random_double_value_for_bias_weight);
+    }
+
     double calculate_value() const {
         double sum = 0;
         for (int i = 0; i < leftconnected_neurons.size(); i++) {

@@ -7,17 +7,26 @@ const int NUMBER_OF_NEURONS_IN_INPUT_LAYER = 2; // equals number of attributes f
 const int MAX_NUMBER_OF_NEURONS_IN_HIDDEN_LAYER = 12; // exact number is a paramater for the system
 const int DEFAULT_NUMBER_OF_NEURONS_IN_HIDDEN_LAYER = 4;
 const int NUMBER_OF_NEURONS_IN_OUTPUT_LAYER = 1; // equals number of classes for the task 
-const int MAX_NUMBER_OF_EPOCHS = 50000; // to be made 50 000 
+const int MAX_NUMBER_OF_EPOCHS = 100000; // to be made 50 000 
 const double MIN_ERROR = 0.01; // to be made 0.001
 const double MAX_ERROR = 1;
 const double LEARNING_RATE = 0.1;
 const double MULTIPLY_CONST = 0.5;
+const double BIAS_VALUE = 1;
+const double BIAS_INITIAL_WEIGHT = 1.5;
+// const double BIAS_VALUE_AND = 1;
+// const double BIAS_WEIGHT_AND = 1.5;
+// const double BIAS_VALUE_OR = 1;
+// const double BIAS_WEIGHT_OR = 0.5;
+// const double BIAS_VALUE_XOR = 1;
+// const double BIAS_WEIGHT_XOR = 0.5;
 
 class Neural_Network{
 private:
     Vector<Neuron> input_layer;
     Vector<Neuron> hidden_layer;
     Vector<Neuron> output_layer;
+    Neuron bias_neuron;
 
     int task_number = 0;        // 0 - AND, 1 - OR, 2 - XOR 
  
@@ -45,17 +54,44 @@ public:
     }
 
     void set_input_values(const Vector<double>& input_values) {
-        for (int i = 0; i < input_layer.size(); i++) {
+        for (int i = 0; i < input_layer.size() - 1; i++) { // excludng the bias neuron value to be set 
             input_layer[i].set_value(input_values[i]);
         }
     }
     
+    void arrange_bias() {
+        bias_neuron.set_value(BIAS_VALUE);
+
+        input_layer.add_empty_elements(1);
+        int index_of_bias_in_input_layer = input_layer.size();
+        input_layer[index_of_bias_in_input_layer] = bias_neuron;
+
+        if (hidden_layer.size() == 0) {
+            for (int i = 0; i < output_layer.size(); i++) {
+                output_layer[i].add_bias_as_left_neuron(bias_neuron);
+            }
+        }
+        else {
+            hidden_layer.add_empty_elements(1);
+            int index_of_bias_in_hidden_layer = hidden_layer.size();
+            hidden_layer[index_of_bias_in_hidden_layer] = bias_neuron;
+
+            for (int i = 0; i < hidden_layer.size(); i++) {
+                hidden_layer[i].add_bias_as_left_neuron(bias_neuron);
+            }
+
+            for (int i = 0; i < output_layer.size(); i++) {
+                output_layer[i].add_bias_as_left_neuron(bias_neuron);
+            }
+        }
+    }
+
     void set_task_number(int _task_number) {
         task_number = _task_number;
     }
 
     void activate_neurons() {
-        for (int i = 0; i < hidden_layer.size(); i++) {
+        for (int i = 0; i < hidden_layer.size() - 1; i++) { // excluding the bias neuron value to be set 
             double new_value = hidden_layer[i].calculate_value();
             hidden_layer[i].set_value(new_value);
         }
@@ -198,7 +234,7 @@ public:
         else {
             cout << "OUTPUT AND INPUT LAYERS" << endl << endl;
             for (int i = 0; i < output_layer.size(); i++) {
-                cout << "FOR NEURON " << i << "IN OUTPUT LAYER: " << endl;
+                cout << "FOR NEURON " << i << " IN OUTPUT LAYER: " << endl;
                 for (int j = 0; j < output_layer[i].number_of_left_connected_neurons(); j++) {
                     double weight = output_layer[i].get_weight(j);
                     cout << "WEIGHT " << j << ": " << weight << endl;

@@ -106,6 +106,8 @@ void test() {
             choose_number_of_neurons_in_hidden_layer(number_of_neurons_in_hidden_layer);
         } 
 
+        // choose_number_of_neurons_in_hidden_layer(number_of_neurons_in_hidden_layer);
+
         Neural_Network neural_network;
         neural_network.set_task_number(task_number);
 
@@ -114,6 +116,8 @@ void test() {
             number_of_neurons_in_hidden_layer,
             NUMBER_OF_NEURONS_IN_OUTPUT_LAYER
         );
+
+        neural_network.arrange_bias();
 
         // cout << "RESULT FROM CLASSIFICATION: " << neural_network.classify_entry(all_entries[3]) << endl;
 
